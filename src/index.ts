@@ -8,6 +8,7 @@ import type { ReferenceObject, SchemaObject } from 'openapi3-ts'
 import { getMetadataSchema } from './decorators'
 import { defaultConverters } from './defaultConverters'
 import { defaultOptions, IOptions } from './options'
+import { ExposeMetadata } from 'class-transformer'
 
 export { JSONSchema } from './decorators'
 
@@ -63,7 +64,19 @@ export function validationMetadataArrayToSchemas(
             isExcluded(propMeta, options) ||
             isExcluded({ ...propMeta, target }, options)
           )
-      )
+      ).map((propMeta) => {
+          const fildToFind = propMeta.propertyName
+
+          const ctMetadata = userOptions?.classTransformerMetadataStorage?.getExposedMetadatas(propMeta.target as any)
+
+          const ctMetaForField = ctMetadata?.filter((meta: ExposeMetadata) => meta.propertyName == fildToFind)
+
+          if (ctMetaForField?.length) {
+              propMeta.propertyName = ctMetaForField[0].options.name ?? propMeta.propertyName
+              return propMeta
+          }
+          return propMeta
+      })
 
     const properties: { [name: string]: ReferenceObject | SchemaObject } = {}
 
