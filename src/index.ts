@@ -65,14 +65,16 @@ export function validationMetadataArrayToSchemas(
             isExcluded({ ...propMeta, target }, options)
           )
       ).map((propMeta) => {
-          const fildToFind = propMeta.propertyName
-
+            /**
+             * Retrieves all properties that have the Expose decorator from class-transformer
+             * and remaps the property names to the names exposed by the Expose decorator.
+             */
           const ctMetadata = userOptions?.classTransformerMetadataStorage?.getExposedMetadatas(propMeta.target as any)
 
-          const ctMetaForField = ctMetadata?.filter((meta: ExposeMetadata) => meta.propertyName == fildToFind)
+          const ctMetaForField = ctMetadata?.find((meta: ExposeMetadata) => meta.propertyName == propMeta.propertyName)
 
-          if (ctMetaForField?.length) {
-              propMeta.propertyName = ctMetaForField[0].options.name ?? propMeta.propertyName
+          if (ctMetaForField) {
+              propMeta.propertyName = ctMetaForField.options.name ?? propMeta.propertyName
               return propMeta
           }
           return propMeta
