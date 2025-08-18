@@ -69,7 +69,7 @@ export function validationMetadataArrayToSchemas(
              * Retrieves all properties that have the Expose decorator from class-transformer
              * and remaps the property names to the names exposed by the Expose decorator.
              */
-          const ctMetadata = userOptions?.classTransformerMetadataStorage?.getExposedMetadatas(propMeta.target as any)
+          const exposeMetadata = userOptions?.classTransformerMetadataStorage?.getExposedMetadatas(propMeta.target as any)
 
           const ctMetaForField = ctMetadata?.find((meta: ExposeMetadata) => meta.propertyName == propMeta.propertyName)
 
