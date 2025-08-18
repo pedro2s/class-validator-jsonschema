@@ -73,10 +73,10 @@ export function validationMetadataArrayToSchemas(
 
           const ctMetaForField = ctMetadata?.find((meta: ExposeMetadata) => meta.propertyName == propMeta.propertyName)
 
-          if (ctMetaForField) {
-              propMeta.propertyName = ctMetaForField.options.name ?? propMeta.propertyName
-              return propMeta
+          if (ctMetaForField?.options.name) {
+              propMeta.propertyName = ctMetaForField.options.name;
           }
+
           return propMeta
       })
 
