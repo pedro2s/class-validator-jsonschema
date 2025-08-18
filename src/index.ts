@@ -64,20 +64,26 @@ export function validationMetadataArrayToSchemas(
             isExcluded(propMeta, options) ||
             isExcluded({ ...propMeta, target }, options)
           )
-      ).map((propMeta) => {
-            /**
-             * Retrieves all properties that have the Expose decorator from class-transformer
-             * and remaps the property names to the names exposed by the Expose decorator.
-             */
-          const exposeMetadata = userOptions?.classTransformerMetadataStorage?.getExposedMetadatas(propMeta.target as any)
+      )
+      .map((propMeta) => {
+        /**
+         * Retrieves all properties that have the Expose decorator from class-transformer
+         * and remaps the property names to the names exposed by the Expose decorator.
+         */
+        const exposeMetadata =
+          userOptions?.classTransformerMetadataStorage?.getExposedMetadatas(
+            propMeta.target as any
+          )
 
-          const ctMetaForField = ctMetadata?.find((meta: ExposeMetadata) => meta.propertyName == propMeta.propertyName)
+        const ctMetaForField = exposeMetadata?.find(
+          (meta: ExposeMetadata) => meta.propertyName === propMeta.propertyName
+        )
 
-          if (ctMetaForField?.options.name) {
-              propMeta.propertyName = ctMetaForField.options.name;
-          }
+        if (ctMetaForField?.options.name) {
+          propMeta.propertyName = ctMetaForField.options.name
+        }
 
-          return propMeta
+        return propMeta
       })
 
     const properties: { [name: string]: ReferenceObject | SchemaObject } = {}

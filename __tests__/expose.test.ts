@@ -4,14 +4,12 @@ import { IsString } from 'class-validator'
 import { validationMetadatasToSchemas } from '../src'
 const { defaultMetadataStorage } = require('class-transformer/cjs/storage')
 
-
-
 // @ts-ignore unused
-class User  {
+class User {
   @IsString()
   id: string
 
-  @Expose({ name: 'domain_id'})
+  @Expose({ name: 'domain_id' })
   @IsString()
   domainId: string
 }
